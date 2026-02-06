@@ -3,25 +3,36 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div style={{ fontFamily: "Arial", padding: "40px", textAlign: "center" }}>
-      <h1>Hello</h1>
-
-      <p>This is a simple landing page built using Next.js and TypeScript.</p>
-
-      <button
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#1daa16",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={() => router.push("/started")}
-      >
-        Get Started
-      </button>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(120deg, #484eed, #33c0ef)",
+        fontFamily: "Arial",
+      }}
+    >
+      <div style={{ textAlign: "center", background: "#b7f7c2", padding: 80, borderRadius: 12 }}>
+        <h1 style={{ fontSize: 50, marginBottom: 10 }}>Welcome </h1>
+        <p style={{ fontSize: 25  , marginBottom: 90 }}>
+          Build modern apps using Next.js & TypeScript
+        </p>
+        <button
+          style={{
+            padding: "14px 32px",
+            fontSize: 30,
+            backgroundColor: "#e82525",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: 60,
+            cursor: "pointer",
+          }}
+          onClick={() => router.push("/started")}
+        >
+          Get Started
+        </button>
+      </div>
     </div>
   );
 }
