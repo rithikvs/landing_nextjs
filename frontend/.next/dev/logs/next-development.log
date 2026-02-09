@@ -1,0 +1,131 @@
+[00:00:02.281] Server  LOG     ✓ Ready in 1634ms
+[00:07:06.061] Server  LOG     ✓ Compiled in 472ms
+[00:07:55.116] Server  LOG     ✓ Compiled in 521ms
+[00:39:08.507] Server  LOG     ✓ Compiled in 219ms
+[00:39:08.748] Browser LOG     Refreshing page data due to server-side change
+[00:39:08.748] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:39:17.737] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:39:41.738] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:39:46.742] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:39:48.744] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:41:18.958] Server  LOG     ✓ Compiled in 178ms
+[00:41:19.740] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:51:53.738] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:51:58.860] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:51:59.084] Browser ERROR   uncaughtError: Error: ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+
+
+[00:51:59.251] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:51:59.251] Browser ERROR   ./src/pages/login.tsx:17:5
+Parsing ecmascript source code failed
+  15 |     setError('');
+  16 |
+> 17 |     import React, { useState } from 'react';
+     |     ^^^^^^
+  18 |     import Link from 'next/link';
+  19 |     import { useRouter } from 'next/router';
+  20 |
+
+'import', and 'export' cannot be used outside of module code
+[00:55:00.733] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:55:01.021] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
