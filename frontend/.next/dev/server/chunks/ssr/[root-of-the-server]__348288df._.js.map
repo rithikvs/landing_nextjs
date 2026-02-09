@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 28, "column": 0}, "map": {"version":3,"sources":["file:///D:/sem%206/projects/next%20js%20with%20ts/frontend/src/pages/index.tsx"],"sourcesContent":["import { useEffect } from 'react';\r\nimport { useRouter } from 'next/router';\r\n\r\nexport default function Home() {\r\n  const router = useRouter();\r\n  useEffect(() => {\r\n    router.replace('/login');\r\n  }, [router]);\r\n  return null;\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AACA;;;AAEe,SAAS;IACtB,MAAM,SAAS,IAAA,oIAAS;IACxB,IAAA,gHAAS,EAAC;QACR,OAAO,OAAO,CAAC;IACjB,GAAG;QAAC;KAAO;IACX,OAAO;AACT"}}]
+    {"offset": {"line": 28, "column": 0}, "map": {"version":3,"sources":["file:///D:/sem%206/projects/project%20management/frontend/src/pages/index.tsx"],"sourcesContent":["import { useEffect } from 'react';\r\nimport { useRouter } from 'next/router';\r\n\r\nexport default function Home() {\r\n  const router = useRouter();\r\n  useEffect(() => {\r\n    router.replace('/login');\r\n  }, [router]);\r\n  return null;\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AACA;;;AAEe,SAAS;IACtB,MAAM,SAAS,IAAA,oIAAS;IACxB,IAAA,gHAAS,EAAC;QACR,OAAO,OAAO,CAAC;IACjB,GAAG;QAAC;KAAO;IACX,OAAO;AACT"}}]
 }
