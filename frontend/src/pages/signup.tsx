@@ -28,7 +28,10 @@ export default function Signup() {
                 throw new Error(data.message || 'Signup failed');
             }
 
-            router.push('/login');
+            router.push({
+                pathname: '/login',
+                query: { email }
+            });
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -37,10 +40,10 @@ export default function Signup() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-blue-100">
-            <div className="w-full max-w-sm p-8 bg-white rounded-xl shadow-lg border border-blue-200 flex flex-col items-center">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 animate-gradient-x">
+            <div className="w-full max-w-sm p-8 bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-blue-200 flex flex-col items-center transition-transform duration-300 hover:scale-105">
                 <div className="flex flex-col items-center mb-6">
-                    <div className="bg-blue-200 rounded-full p-4 mb-2">
+                    <div className="bg-gradient-to-tr from-blue-300 to-blue-500 rounded-full p-4 mb-2 shadow-md animate-bounce-slow">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 text-blue-500">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 1115 0v.75a.75.75 0 01-.75.75h-13.5a.75.75 0 01-.75-.75v-.75z" />
                         </svg>
@@ -48,7 +51,7 @@ export default function Signup() {
                 </div>
                 <form onSubmit={handleSignup} className="w-full space-y-4">
                     {error && (
-                        <div className="mb-2 p-2 bg-red-100 border border-red-300 rounded text-red-700 text-sm text-center">{error}</div>
+                        <div className="mb-2 p-2 bg-red-100 border border-red-300 rounded text-red-700 text-sm text-center animate-pulse">{error}</div>
                     )}
                     <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400">
@@ -60,7 +63,7 @@ export default function Signup() {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300"
+                            className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300 shadow-sm transition-all duration-200 focus:scale-[1.03]"
                             placeholder="Name"
                             required
                         />
@@ -75,7 +78,7 @@ export default function Signup() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300"
+                            className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300 shadow-sm transition-all duration-200 focus:scale-[1.03]"
                             placeholder="Email"
                             required
                         />
@@ -90,7 +93,7 @@ export default function Signup() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300"
+                            className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-blue-300 shadow-sm transition-all duration-200 focus:scale-[1.03]"
                             placeholder="Password"
                             required
                         />
@@ -98,7 +101,7 @@ export default function Signup() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded transition-all duration-150"
+                        className="w-full py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg shadow-md transition-all duration-200 hover:scale-105"
                     >
                         {loading ? 'Signing up...' : 'SIGNUP'}
                     </button>
