@@ -56,7 +56,7 @@ export const updateProject = async (req: Request, res: Response) => {
   const { project_name, description } = req.body;
   try {
     await execute(
-      'UPDATE projects SET project_name = :project_name, description = :description WHERE project_id = :id',
+      'UPDATE projects SET project_name = :1, description = :2 WHERE project_id = :3',
       [project_name, description, id]
     );
     res.json({ message: 'Project updated successfully' });
@@ -69,7 +69,7 @@ export const updateProject = async (req: Request, res: Response) => {
 export const deleteProject = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await execute('DELETE FROM projects WHERE project_id = :id', [id]);
+    await execute('DELETE FROM projects WHERE project_id = :1', [id]);
     res.json({ message: 'Project deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete project', details: error });
