@@ -209,9 +209,9 @@ export default function ProjectsPage() {
                   )}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 'auto' }}>
-                  <button onClick={() => startEdit(project)} title="Edit" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#3182ce', marginRight: 4 }}>✏️</button>
-                  <button onClick={() => setShowDeleteId(project.project_id)} title="Delete" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#e53e3e', marginRight: 4 }}>🗑️</button>
-                  <button onClick={() => router.push(`/projects/${project.project_id}`)} title="View" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#38a169' }}>➜</button>
+                  <button onClick={() => startEdit(project)} title="Edit" style={{ padding: '8px 18px', background: '#3182ce', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 15, marginRight: 4, cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => setShowDeleteId(project.project_id)} title="Delete" style={{ padding: '8px 18px', background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 15, marginRight: 4, cursor: 'pointer' }}>Delete</button>
+               
                 </div>
                 {/* Delete Confirmation Modal */}
                 {showDeleteId === project.project_id && (
