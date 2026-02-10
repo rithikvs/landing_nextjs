@@ -1,0 +1,1 @@
+Backup created before cleanup. Unused files and folders will be deleted from frontend.

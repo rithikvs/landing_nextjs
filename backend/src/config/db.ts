@@ -10,10 +10,10 @@ const dbConfig = {
 };
 
 try {
-    // Oracle 10g requires thick mode (Instant Client must be installed)
+    // ...existing code...
     oracledb.initOracleClient();
 } catch (err) {
-    console.log("Oracle Client already initialized or not found.");
+    // ...existing code...
 }
 
 export async function getConnection() {
