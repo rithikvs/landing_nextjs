@@ -266,7 +266,6 @@ const TasksPage: React.FC = () => {
                 color: router.pathname === '/tasks' ? '#fff' : '#a0aec0'
               }}
             >Tasks</li>
-            <li style={{ padding: '12px 32px', margin: '0 16px 12px 16px', color: '#a0aec0', cursor: 'pointer' }}>Settings</li>
           </ul>
         </nav>
         <button onClick={handleLogout} style={{ marginTop: 'auto', marginBottom: 16, padding: '10px 32px', background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Logout</button>

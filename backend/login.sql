@@ -21,3 +21,11 @@ COLUMN project_name FORMAT A20
 COLUMN description FORMAT A30
 COLUMN created_by FORMAT 9999
 
+-- task
+
+COLUMN task_id     FORMAT 9999
+COLUMN project_id  FORMAT 9999
+COLUMN task_name   FORMAT A30
+COLUMN status      FORMAT A15
+COLUMN assigned_to FORMAT A10
+
