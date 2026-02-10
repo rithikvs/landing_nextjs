@@ -42,3 +42,31 @@ BEGIN
     SELECT projects_seq.NEXTVAL INTO :NEW.project_id FROM dual;
 END;
 /
+
+-- -----------------------------
+-- Tasks
+-- -----------------------------
+-- Drop table, sequence, and trigger for tasks if they exist (run manually if needed)
+-- DROP TABLE tasks;
+-- DROP SEQUENCE tasks_seq;
+-- DROP TRIGGER tasks_before_insert;
+
+CREATE TABLE tasks (
+    task_id NUMBER PRIMARY KEY,
+    project_id NUMBER NOT NULL,
+    task_name VARCHAR2(200) NOT NULL,
+    status VARCHAR2(50) DEFAULT 'Pending' NOT NULL,
+    assigned_to NUMBER,
+    CONSTRAINT fk_tasks_project
+        FOREIGN KEY (project_id) REFERENCES projects(project_id)
+);
+
+CREATE SEQUENCE tasks_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+
+CREATE OR REPLACE TRIGGER tasks_before_insert
+BEFORE INSERT ON tasks
+FOR EACH ROW
+BEGIN
+    SELECT tasks_seq.NEXTVAL INTO :NEW.task_id FROM dual;
+END;
+/

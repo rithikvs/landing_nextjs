@@ -121,8 +121,29 @@ export default function ProjectsPage() {
         <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>PM Tool</h2>
         <nav style={{ width: '100%' }}>
           <ul style={{ listStyle: 'none', padding: 0, width: '100%' }}>
-            <li style={{ padding: '12px 32px', background: '#2d3748', borderRadius: 8, margin: '0 16px 12px 16px', fontWeight: 600, cursor: 'pointer' }}>Projects</li>
-            <li style={{ padding: '12px 32px', margin: '0 16px 12px 16px', color: '#a0aec0', cursor: 'pointer' }}>Tasks</li>
+            <li
+              style={{
+                padding: '12px 32px',
+                background: router.pathname === '/projects' ? '#2d3748' : undefined,
+                borderRadius: 8,
+                margin: '0 16px 12px 16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                color: router.pathname === '/projects' ? '#fff' : '#a0aec0'
+              }}
+            >Projects</li>
+            <li
+              style={{
+                padding: '12px 32px',
+                background: router.pathname === '/tasks' ? '#2d3748' : undefined,
+                borderRadius: 8,
+                margin: '0 16px 12px 16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                color: router.pathname === '/tasks' ? '#fff' : '#a0aec0'
+              }}
+              onClick={() => router.push('/tasks')}
+            >Tasks</li>
             <li style={{ padding: '12px 32px', margin: '0 16px 12px 16px', color: '#a0aec0', cursor: 'pointer' }}>Settings</li>
           </ul>
         </nav>
