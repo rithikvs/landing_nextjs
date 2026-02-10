@@ -6,11 +6,12 @@ export const createProject = async (req: Request, res: Response) => {
   const { project_name, description, created_by } = req.body;
   try {
     const result = await execute(
-      'INSERT INTO projects (project_name, description, created_by) VALUES (:project_name, :description, :created_by)',
+      'INSERT INTO projects (project_name, description, created_by) VALUES (:1, :2, :3)',
       [project_name, description, created_by]
     );
     res.status(201).json({ message: 'Project created successfully', projectId: result.lastRowid });
   } catch (error) {
+    console.error('Create Project Error:', error);
     res.status(500).json({ error: 'Failed to create project', details: error });
   }
 };
@@ -18,7 +19,11 @@ export const createProject = async (req: Request, res: Response) => {
 // Get all projects
 export const getProjects = async (req: Request, res: Response) => {
   try {
-    const result = await execute('SELECT * FROM projects', []);
+    const result = await execute(`
+      SELECT p.project_id, p.project_name, p.description, u.name AS created_by
+      FROM projects p
+      LEFT JOIN users u ON p.created_by = u.id
+    `, []);
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch projects', details: error });
@@ -29,7 +34,12 @@ export const getProjects = async (req: Request, res: Response) => {
 export const getProjectById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await execute('SELECT * FROM projects WHERE project_id = :id', [id]);
+    const result = await execute(`
+      SELECT p.project_id, p.project_name, p.description, u.name AS created_by
+      FROM projects p
+      LEFT JOIN users u ON p.created_by = u.id
+      WHERE p.project_id = :1
+    `, [id]);
     const rows = result.rows ?? [];
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found' });
