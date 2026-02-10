@@ -20,7 +20,7 @@ export const createProject = async (req: Request, res: Response) => {
 export const getProjects = async (req: Request, res: Response) => {
   try {
     const result = await execute(`
-      SELECT p.project_id, p.project_name, p.description, u.name AS created_by
+      SELECT p.project_id, p.project_name, p.description, u.name AS created_by_name, p.created_by
       FROM projects p
       LEFT JOIN users u ON p.created_by = u.id
     `, []);
@@ -35,7 +35,7 @@ export const getProjectById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const result = await execute(`
-      SELECT p.project_id, p.project_name, p.description, u.name AS created_by
+      SELECT p.project_id, p.project_name, p.description, u.name AS created_by_name, p.created_by
       FROM projects p
       LEFT JOIN users u ON p.created_by = u.id
       WHERE p.project_id = :1

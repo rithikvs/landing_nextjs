@@ -29,7 +29,18 @@ export default function ProjectsPage() {
     setLoading(true);
     try {
       const res = await axios.get(API_BASE);
-      setProjects(res.data);
+      let data = res.data;
+      // If backend returns array of arrays, map to Project objects
+      if (Array.isArray(data) && Array.isArray(data[0])) {
+        data = data.map((row: any[]) => ({
+          project_id: row[0],
+          project_name: row[1],
+          description: row[2],
+          created_by_name: row[3],
+          created_by: row[4],
+        }));
+      }
+      setProjects(data);
     } catch (err) {
       showToast('error', 'Failed to fetch projects');
     }
