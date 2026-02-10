@@ -41,7 +41,10 @@ interface Project {
 
 const statusOptions = ['Pending', 'In Progress', 'Completed'];
 
+import { useRouter } from 'next/router';
+
 const TasksPage: React.FC = () => {
+  const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>(''); // '' = all projects
@@ -57,6 +60,11 @@ const TasksPage: React.FC = () => {
     status: 'Pending',
     assigned_to: ''
   });
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
 
   const showToast = (type: 'success' | 'error', message: string) => {
     setToast({ type, message });
@@ -229,183 +237,214 @@ const TasksPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>Tasks</Typography>
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-        <Typography variant="body1">Project</Typography>
-        <Select
-          size="small"
-          value={selectedProjectId}
-          onChange={(e) => setSelectedProjectId(String(e.target.value))}
-          sx={{ minWidth: 240 }}
-        >
-          <MenuItem value="">All projects</MenuItem>
-          {projects.map((p) => (
-            <MenuItem key={p.project_id} value={String(p.project_id)}>
-              {p.project_name} (#{p.project_id})
-            </MenuItem>
-          ))}
-        </Select>
-      </Box>
-
-      <Button variant="contained" color="primary" onClick={() => handleOpen()} sx={{ mb: 2 }}>
-        Add Task
-      </Button>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Task Name</TableCell>
-              <TableCell>Project ID</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Assigned To</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={5}>Loading…</TableCell>
-              </TableRow>
-            ) : tasks.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5}>No tasks found.</TableCell>
-              </TableRow>
-            ) : tasks.map((task) => (
-              <TableRow key={task.task_id}>
-                <TableCell>{task.task_name}</TableCell>
-                <TableCell>
-                  {projectNameById(task.project_id)
-                    ? `${projectNameById(task.project_id)} (#${task.project_id})`
-                    : task.project_id}
-                </TableCell>
-                <TableCell>{task.status}</TableCell>
-                <TableCell>{Number.isFinite(task.assigned_to) ? task.assigned_to : ''}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleOpen(task)} disabled={loading}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => setConfirmDeleteId(task.task_id)} color="error" disabled={loading}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* Delete confirmation */}
-      <Dialog open={confirmDeleteId !== null} onClose={() => setConfirmDeleteId(null)}>
-        <DialogTitle>Delete task?</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" sx={{ mt: 1 }}>
-            Are you sure you want to delete this task? This action cannot be undone.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
-          <Button
-            color="error"
-            variant="contained"
-            onClick={async () => {
-              if (confirmDeleteId == null) return;
-              const id = confirmDeleteId;
-              setConfirmDeleteId(null);
-              await handleDelete(id);
-            }}
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editTask ? 'Edit Task' : 'Add Task'}</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Task Name"
-            name="task_name"
-            value={form.task_name}
-            onChange={handleInputChange}
-            fullWidth
-          />
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f6fa' }}>
+      {/* Sidebar */}
+      <aside style={{ width: 220, background: '#23272f', color: '#fff', padding: '32px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '2px 0 8px rgba(0,0,0,0.04)' }}>
+        <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>PM Tool</h2>
+        <nav style={{ width: '100%' }}>
+          <ul style={{ listStyle: 'none', padding: 0, width: '100%' }}>
+            <li
+              style={{
+                padding: '12px 32px',
+                background: router.pathname === '/projects' ? '#2d3748' : undefined,
+                borderRadius: 8,
+                margin: '0 16px 12px 16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                color: router.pathname === '/projects' ? '#fff' : '#a0aec0'
+              }}
+              onClick={() => router.push('/projects')}
+            >Projects</li>
+            <li
+              style={{
+                padding: '12px 32px',
+                background: router.pathname === '/tasks' ? '#2d3748' : undefined,
+                borderRadius: 8,
+                margin: '0 16px 12px 16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                color: router.pathname === '/tasks' ? '#fff' : '#a0aec0'
+              }}
+            >Tasks</li>
+            <li style={{ padding: '12px 32px', margin: '0 16px 12px 16px', color: '#a0aec0', cursor: 'pointer' }}>Settings</li>
+          </ul>
+        </nav>
+        <button onClick={handleLogout} style={{ marginTop: 'auto', marginBottom: 16, padding: '10px 32px', background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Logout</button>
+      </aside>
+      {/* Main Content */}
+      <main style={{ flex: 1, padding: '48px 32px', maxWidth: 900, margin: '0 auto' }}>
+        <Typography variant="h4" gutterBottom>Tasks</Typography>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+          <Typography variant="body1">Project</Typography>
           <Select
-            name="project_id"
-            value={form.project_id}
-            onChange={handleSelectChange}
-            fullWidth
-            sx={{ mt: 2 }}
-            displayEmpty
+            size="small"
+            value={selectedProjectId}
+            onChange={(e) => setSelectedProjectId(String(e.target.value))}
+            sx={{ minWidth: 240 }}
           >
-            <MenuItem value="">
-              <em>Select project</em>
-            </MenuItem>
+            <MenuItem value="">All projects</MenuItem>
             {projects.map((p) => (
               <MenuItem key={p.project_id} value={String(p.project_id)}>
                 {p.project_name} (#{p.project_id})
               </MenuItem>
             ))}
           </Select>
-          <Select
-            margin="dense"
-            label="Status"
-            name="status"
-            value={form.status}
-            onChange={handleSelectChange}
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            {statusOptions.map((status) => (
-              <MenuItem key={status} value={status}>{status}</MenuItem>
-            ))}
-          </Select>
-          <TextField
-            margin="dense"
-            label="Assigned To (User ID)"
-            name="assigned_to"
-            value={form.assigned_to}
-            onChange={handleInputChange}
-            fullWidth
-            type="number"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit} variant="contained" color="primary">
-            {editTask ? 'Update' : 'Add'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Snackbar
-        open={toast !== null}
-        autoHideDuration={2500}
-        onClose={() => setToast(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        {toast ? (
-          <Alert
-            onClose={() => setToast(null)}
-            severity={toast.type}
-            sx={{ width: '100%' }}
-            variant="filled"
-          >
-            {toast.message}
-          </Alert>
-        ) : (
-          // Snackbar requires a child; keep it valid
-          <span />
-        )}
-      </Snackbar>
-    </Box>
+        </Box>
+        <Button variant="contained" color="primary" onClick={() => handleOpen()} sx={{ mb: 2 }}>
+          Add Task
+        </Button>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Task Name</TableCell>
+                <TableCell>Project ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Assigned To</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={5}>Loading…</TableCell>
+                </TableRow>
+              ) : tasks.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5}>No tasks found.</TableCell>
+                </TableRow>
+              ) : tasks.map((task) => (
+                <TableRow key={task.task_id}>
+                  <TableCell>{task.task_name}</TableCell>
+                  <TableCell>
+                    {projectNameById(task.project_id)
+                      ? `${projectNameById(task.project_id)} (#${task.project_id})`
+                      : task.project_id}
+                  </TableCell>
+                  <TableCell>{task.status}</TableCell>
+                  <TableCell>{Number.isFinite(task.assigned_to) ? task.assigned_to : ''}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleOpen(task)} disabled={loading}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => setConfirmDeleteId(task.task_id)} color="error" disabled={loading}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* Delete confirmation */}
+        <Dialog open={confirmDeleteId !== null} onClose={() => setConfirmDeleteId(null)}>
+          <DialogTitle>Delete task?</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              Are you sure you want to delete this task? This action cannot be undone.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={async () => {
+                if (confirmDeleteId == null) return;
+                const id = confirmDeleteId;
+                setConfirmDeleteId(null);
+                await handleDelete(id);
+              }}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{editTask ? 'Edit Task' : 'Add Task'}</DialogTitle>
+          <DialogContent>
+            <TextField
+              margin="dense"
+              label="Task Name"
+              name="task_name"
+              value={form.task_name}
+              onChange={handleInputChange}
+              fullWidth
+            />
+            <Select
+              name="project_id"
+              value={form.project_id}
+              onChange={handleSelectChange}
+              fullWidth
+              sx={{ mt: 2 }}
+              displayEmpty
+            >
+              <MenuItem value="">
+                <em>Select project</em>
+              </MenuItem>
+              {projects.map((p) => (
+                <MenuItem key={p.project_id} value={String(p.project_id)}>
+                  {p.project_name} (#{p.project_id})
+                </MenuItem>
+              ))}
+            </Select>
+            <Select
+              margin="dense"
+              label="Status"
+              name="status"
+              value={form.status}
+              onChange={handleSelectChange}
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              {statusOptions.map((status) => (
+                <MenuItem key={status} value={status}>{status}</MenuItem>
+              ))}
+            </Select>
+            <TextField
+              margin="dense"
+              label="Assigned To (User ID)"
+              name="assigned_to"
+              value={form.assigned_to}
+              onChange={handleInputChange}
+              fullWidth
+              type="number"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              {editTask ? 'Update' : 'Add'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar
+          open={toast !== null}
+          autoHideDuration={2500}
+          onClose={() => setToast(null)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          {toast ? (
+            <Alert
+              onClose={() => setToast(null)}
+              severity={toast.type}
+              sx={{ width: '100%' }}
+              variant="filled"
+            >
+              {toast.message}
+            </Alert>
+          ) : (
+            // Snackbar requires a child; keep it valid
+            <span />
+          )}
+        </Snackbar>
+      </main>
+    </div>
   );
 };
 
