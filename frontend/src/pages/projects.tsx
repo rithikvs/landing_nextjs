@@ -115,10 +115,10 @@ export default function ProjectsPage() {
   );
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f6fa' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       {/* Sidebar */}
-      <aside style={{ width: 220, background: '#23272f', color: '#fff', padding: '32px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '2px 0 8px rgba(0,0,0,0.04)' }}>
-        <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>PM Tool</h2>
+      <aside style={{ width: 240, background: '#23272f', color: '#fff', padding: '40px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '2px 0 12px rgba(0,0,0,0.06)' }}>
+        <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>Project management</h2>
         <nav style={{ width: '100%' }}>
           <ul style={{ listStyle: 'none', padding: 0, width: '100%' }}>
             <li
@@ -150,8 +150,8 @@ export default function ProjectsPage() {
         <button onClick={handleLogout} style={{ marginTop: 'auto', marginBottom: 16, padding: '10px 32px', background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Logout</button>
       </aside>
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '48px 32px', maxWidth: 900, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+      <main style={{ flex: 1, padding: '56px 48px', maxWidth: 1200, margin: '0 auto', background: '#fff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', minHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
           <h1 style={{ fontSize: 32, fontWeight: 700, color: '#2d3748', letterSpacing: 1 }}>Projects</h1>
           <input
             type="text"
@@ -161,7 +161,7 @@ export default function ProjectsPage() {
             style={{ padding: 10, border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 16, width: 240 }}
           />
         </div>
-        <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
+        <div style={{ display: 'flex', gap: 20, marginBottom: 32 }}>
           <input
             placeholder="Project Name"
             value={name}
@@ -190,7 +190,7 @@ export default function ProjectsPage() {
           </div>
         )}
         {/* Project List Cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
           {loading ? (
             <p style={{ textAlign: 'center', fontSize: 18 }}>Loading...</p>
           ) : filteredProjects.length === 0 ? (
@@ -202,15 +202,16 @@ export default function ProjectsPage() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  background: '#fff',
-                  borderRadius: 12,
-                  boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-                  padding: 24,
+                  background: '#f9fafb',
+                  borderRadius: 16,
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+                  padding: 32,
                   transition: 'box-shadow 0.2s',
                   border: '1px solid #e2e8f0',
                   cursor: 'pointer',
                   position: 'relative',
-                  gap: 24
+                  gap: 32,
+                  minHeight: 120
                 }}
                 onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)')}
                 onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 1px 6px rgba(0,0,0,0.06)')}

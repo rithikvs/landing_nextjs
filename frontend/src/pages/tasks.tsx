@@ -237,10 +237,10 @@ const TasksPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f4f6fa' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       {/* Sidebar */}
-      <aside style={{ width: 220, background: '#23272f', color: '#fff', padding: '32px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '2px 0 8px rgba(0,0,0,0.04)' }}>
-        <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>PM Tool</h2>
+      <aside style={{ width: 240, background: '#23272f', color: '#fff', padding: '40px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '2px 0 12px rgba(0,0,0,0.06)' }}>
+        <h2 style={{ fontWeight: 700, fontSize: 22, marginBottom: 32, letterSpacing: 1 }}>Project management</h2>
         <nav style={{ width: '100%' }}>
           <ul style={{ listStyle: 'none', padding: 0, width: '100%' }}>
             <li
@@ -272,29 +272,14 @@ const TasksPage: React.FC = () => {
         <button onClick={handleLogout} style={{ marginTop: 'auto', marginBottom: 16, padding: '10px 32px', background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Logout</button>
       </aside>
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '48px 32px', maxWidth: 900, margin: '0 auto' }}>
+      <main style={{ flex: 1, padding: '56px 48px', maxWidth: 1200, margin: '0 auto', background: '#fff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', minHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h4" gutterBottom>Tasks</Typography>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-          <Typography variant="body1">Project</Typography>
-          <Select
-            size="small"
-            value={selectedProjectId}
-            onChange={(e) => setSelectedProjectId(String(e.target.value))}
-            sx={{ minWidth: 240 }}
-          >
-            <MenuItem value="">All projects</MenuItem>
-            {projects.map((p) => (
-              <MenuItem key={p.project_id} value={String(p.project_id)}>
-                {p.project_name} (#{p.project_id})
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
+        {/* Project dropdown removed */}
         <Button variant="contained" color="primary" onClick={() => handleOpen()} sx={{ mb: 2 }}>
           Add Task
         </Button>
