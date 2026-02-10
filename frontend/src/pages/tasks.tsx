@@ -20,6 +20,7 @@ import {
   Select,
   MenuItem,
   Alert,
+  Snackbar,
   type SelectChangeEvent
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -48,12 +49,18 @@ const TasksPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [form, setForm] = useState({
     project_id: '',
     task_name: '',
     status: 'Pending',
     assigned_to: ''
   });
+
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ type, message });
+  };
 
   const fetchProjects = async () => {
     try {
@@ -87,7 +94,38 @@ const TasksPage: React.FC = () => {
       const res = await axios.get('/api/tasks', {
         params: selectedProjectId ? { project_id: selectedProjectId } : undefined,
       });
-      setTasks(Array.isArray(res.data) ? res.data : []);
+      let data = res.data;
+      // Oracle can return rows as array-of-arrays depending on outFormat
+      if (Array.isArray(data) && Array.isArray(data[0])) {
+        data = data.map((row: any[]) => ({
+          // SELECT * FROM tasks -> column order in schema:
+          // task_id, project_id, task_name, status, assigned_to
+          task_id: row[0],
+          project_id: row[1],
+          task_name: row[2],
+          status: row[3],
+          assigned_to: row[4],
+        }));
+      }
+
+      const normalized: Task[] = Array.isArray(data)
+        ? data
+            .map((t: any) => ({
+              task_id: Number(t?.task_id),
+              project_id: Number(t?.project_id),
+              task_name: String(t?.task_name ?? ''),
+              status: String(t?.status ?? ''),
+              assigned_to: Number(t?.assigned_to),
+            }))
+            .filter(
+              (t: Task) =>
+                Number.isFinite(t.task_id) &&
+                Number.isFinite(t.project_id) &&
+                t.task_name.length > 0
+            )
+        : [];
+
+      setTasks(normalized);
     } catch (e: any) {
       const message =
         e?.response?.data?.details ||
@@ -155,8 +193,10 @@ const TasksPage: React.FC = () => {
       const payload = buildPayload();
       if (editTask) {
         await axios.put(`/api/tasks/${editTask.task_id}`, payload);
+        showToast('success', 'Task updated');
       } else {
         await axios.post('/api/tasks', payload);
+        showToast('success', 'Task created');
       }
       await fetchTasks();
       handleClose();
@@ -167,6 +207,7 @@ const TasksPage: React.FC = () => {
         e?.message ||
         'Failed to save task';
       setError(String(message));
+      showToast('error', String(message));
     }
   };
 
@@ -175,6 +216,7 @@ const TasksPage: React.FC = () => {
     try {
       await axios.delete(`/api/tasks/${id}`);
       await fetchTasks();
+      showToast('success', 'Task deleted');
     } catch (e: any) {
       const message =
         e?.response?.data?.details ||
@@ -182,6 +224,7 @@ const TasksPage: React.FC = () => {
         e?.message ||
         'Failed to delete task';
       setError(String(message));
+      showToast('error', String(message));
     }
   };
 
@@ -243,16 +286,46 @@ const TasksPage: React.FC = () => {
                     : task.project_id}
                 </TableCell>
                 <TableCell>{task.status}</TableCell>
-                <TableCell>{task.assigned_to}</TableCell>
+                <TableCell>{Number.isFinite(task.assigned_to) ? task.assigned_to : ''}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleOpen(task)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(task.task_id)} color="error"><DeleteIcon /></IconButton>
+                  <IconButton onClick={() => handleOpen(task)} disabled={loading}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => setConfirmDeleteId(task.task_id)} color="error" disabled={loading}>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Delete confirmation */}
+      <Dialog open={confirmDeleteId !== null} onClose={() => setConfirmDeleteId(null)}>
+        <DialogTitle>Delete task?</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            Are you sure you want to delete this task? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={async () => {
+              if (confirmDeleteId == null) return;
+              const id = confirmDeleteId;
+              setConfirmDeleteId(null);
+              await handleDelete(id);
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{editTask ? 'Edit Task' : 'Add Task'}</DialogTitle>
         <DialogContent>
@@ -311,6 +384,27 @@ const TasksPage: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={toast !== null}
+        autoHideDuration={2500}
+        onClose={() => setToast(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        {toast ? (
+          <Alert
+            onClose={() => setToast(null)}
+            severity={toast.type}
+            sx={{ width: '100%' }}
+            variant="filled"
+          >
+            {toast.message}
+          </Alert>
+        ) : (
+          // Snackbar requires a child; keep it valid
+          <span />
+        )}
+      </Snackbar>
     </Box>
   );
 };
